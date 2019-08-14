@@ -1,14 +1,13 @@
 <template>
-    <div class="app-main-layout">
+  <Loader v-if="loading" />
+    <div class="app-main-layout" v-else>
       <Navbar @open="isOpen = !isOpen"/>
       <Sidebar v-model="isOpen" />
-
       <main class="app-content" :class="{full: !isOpen}">
         <div class="app-page">
-		  		<router-view />
+	  			<router-view />
         </div>
-		  </main>
-
+	  	</main>
       <div class="fixed-action-btn">
         <router-link
         class="btn-floating btn-large blue"
@@ -17,7 +16,8 @@
           <i class="large material-icons">add</i>
         </router-link>
       </div>
-  </div>
+    </div>
+
 </template>
 
 <script>
@@ -28,7 +28,15 @@ export default {
   name: 'main-layout',
   data: () => ({
     isOpen: true,
+    loading: true
   }),
+  async mounted() {
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch('fetchInfo');
+    }
+
+    this.loading = false
+  },
   components: {
     Navbar, 
     Sidebar

@@ -16,7 +16,7 @@
                 data-target="dropdown"
                 ref="dropdown"
             >
-              USER NAME
+              {{ name }}
               <i class="material-icons right">arrow_drop_down</i>
             </a>
 
@@ -56,6 +56,11 @@ export default {
       constrainWidth: false
     })
   },
+  computed: {
+      name() {
+        return this.$store.getters.info.name;
+      }
+  },
   beforeDestroy() {
     this.interval = null;
     if (this.dropdown && this.dropdown.destroy) {
@@ -63,8 +68,8 @@ export default {
     }
   },
   methods: {
-    logout() {
-      console.log('Log out');
+    async logout() {
+      await this.$store.dispatch('logout')
       this.$router.push('login?message=logout')
     }
   }
