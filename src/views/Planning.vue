@@ -2,22 +2,76 @@
     <div>
         <div class="page-title">
           <h3>Планирование</h3>
-          <h4>12 212</h4>
+          <h4>{{ info.bill | currency('RUB') }}</h4>
         </div>
+
+        <Loader v-if="loading"/>
+
+        <p class="center" v-else-if="!categories.length">Категорий пока нет. <router-link to="/categories">Добавить новую категорию</router-link></p>
         
-        <section>
-          <div>
+        <section v-else>
+          <div v-for="c in categories" :key="c.id">
             <p>
-              <strong>Девушка:</strong>
-              12 122 из 14 0000
+              <strong>{{ c.title }}</strong>
+              {{ c.spent | currency }} из {{ c.limit | currency }}
             </p>
-            <div class="progress" >
+            <div class="progress" v-tooltip="c.tooltip">
               <div
-                  class="determinate green"
-                  style="width:40%"
+                class="determinate"
+                :class="c.color"
+                :style="{width: c.progressPercent + '%'}"
               ></div>
             </div>
           </div>
         </section>
     </div>
 </template>
+<script>
+import { mapGetters } from 'vuex'
+import currencyFilter from '@/filters/currency.filter'
+export default {
+  name: 'planning',
+  data: () => ({
+    loading: true,
+    categories: []
+  }),
+  async mounted() {
+    const records = await this.$store.dispatch('fetchRecords')
+    const categories = await this.$store.dispatch('fetchCategories')
+
+    this.categories = categories.map(item => {
+      const spent = records
+        .filter(rec => rec.categoryId === item.id)
+        .filter(rec => rec.type === 'outcome')
+        .reduce((acc, item) => acc + +item.amount, 0)
+
+      const percent = 100 * spent / item.limit
+      const progressPercent = percent > 100 ? 100 : percent
+      let color;
+      if (percent < 60) {
+        color = 'green';
+      } else if (percent < 90) {
+        color = 'yellow'
+      } else {
+        color = 'red'
+      }
+
+      const tooltipValue = item.limit - spent
+      const tooltip = `${tooltipValue >= 0 ? 'Осталось ' : 'Превышение на '} ${currencyFilter(Math.abs(tooltipValue))}`
+
+      return {
+        ...item,
+        tooltip,
+        color,
+        progressPercent,
+        spent
+      }
+    })
+
+    this.loading = false
+  },
+  computed: {
+    ...mapGetters(['info'])
+  },
+}
+</script>
