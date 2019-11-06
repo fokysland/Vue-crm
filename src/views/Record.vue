@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="page-title">
-          <h3>Новая запись</h3>
+          <h3>{{ 'NewRecord' | localize }}</h3>
         </div>
 
         <Loader v-if="loading" />
 
-        <p class="center" v-else-if="!categories.length">Категорий пока нет. <router-link to="/categories">Добавить новую категорию</router-link></p>
+        <p class="center" v-else-if="!categories.length">{{ 'NoCategories' | localize }}<router-link to="/categories">{{ 'AddNewCategory' | localize }}</router-link></p>
         
         <form class="form" v-else @submit.prevent="submitHandler">
           <div class="input-field" >
@@ -17,7 +17,7 @@
                 :value="c.id"
               >{{ c.title }}</option>
             </select>
-            <label>Выберите категорию</label>
+            <label>{{ 'CategoryChoose' | localize }}</label>
           </div>
           <p>
             <label>
@@ -28,7 +28,7 @@
                 value="income"
                 v-model="type"
               />
-              <span>Доход</span>
+              <span>{{ 'Income' | localize }}</span>
             </label>
           </p>
         
@@ -41,7 +41,7 @@
                 value="outcome"
                 v-model="type"
               />
-              <span>Расход</span>
+              <span>{{ 'Outcome' | localize }}</span>
             </label>
           </p>
         
@@ -52,8 +52,8 @@
               v-model.number = "amount"
               :class="{ invalid: ($v.amount.$dirty && !$v.amount.minValue) }"
             >
-            <label for="amount">Сумма</label>
-            <span class="helper-text invalid" v-if="$v.amount.$dirty && !$v.amount.minValue">Минимальное значение {{ $v.amount.$params.minValue.min }}</span>
+            <label for="amount">{{ 'Sum' | localize }}</label>
+            <span class="helper-text invalid" v-if="$v.amount.$dirty && !$v.amount.minValue">{{ 'MinValue' }} {{ $v.amount.$params.minValue.min }}</span>
           </div>
         
           <div class="input-field">
@@ -63,13 +63,13 @@
               v-model = "description"
               :class="{ invalid: ($v.description.$dirty && !$v.description.required) }"
             >
-            <label for="description">Описание</label>
+            <label for="description">{{ 'Description' | localize }}</label>
             <span
-              class="helper-text invalid" v-if="$v.description.$dirty && !$v.description.required">Необходимо описание</span>
+              class="helper-text invalid" v-if="$v.description.$dirty && !$v.description.required">{{ 'DescriptionRequired' | localize }}</span>
           </div>
         
           <button class="btn waves-effect waves-light" type="submit">
-            Создать
+            {{ 'Create' | localize }}
             <i class="material-icons right">send</i>
           </button>
         </form>
@@ -79,6 +79,7 @@
 <script>
 import { required, minValue } from 'vuelidate/lib/validators/'
 import { mapGetters } from 'vuex'
+import localize from '@/filters/localize.filter'
 export default {
   name: 'record',
   data: () => ({
@@ -100,11 +101,11 @@ export default {
     }, 0)
   },
   destroyed() {
-		if (this.select && this.select.destroy) this.select.destroy()
+    if (this.select && this.select.destroy) this.select.destroy()
   },
   validations: {
-		amount: { required, minValue: minValue(10) },
-		description: { required }
+    amount: { required, minValue: minValue(10) },
+    description: { required }
   },
   computed: {
     ...mapGetters(['info']),
@@ -119,8 +120,8 @@ export default {
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
-				this.$v.$touch()
-				return
+        this.$v.$touch()
+        return
       }
       
       try {
@@ -137,12 +138,12 @@ export default {
         : this.info.bill - this.amount
 
         await this.$store.dispatch('updateInfo', { bill })
-        this.$message('Запись успешно создана')
+        this.$message(localize('RecordCreated'))
         this.$v.$reset()
         this.amount = 0
         this.description = ''
         } else {
-          this.$message(`Недостаточно средств на счете (${this.amount - this.info.bill})`);
+          this.$message(`${localize('NotEnoughMoney')} (${this.amount - this.info.bill})`);
         }
       } catch(e) {}
     }

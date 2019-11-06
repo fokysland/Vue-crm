@@ -1,38 +1,31 @@
 <template>
     <form class="card auth-card" @submit.prevent="submitHandler">
         <div class="card-content">
-          <span class="card-title">Домашняя бухгалтерия</span>
+          <span class="card-title">{{ 'HomeAccounting' | localize }}</span>
           <div class="input-field">
             <input
-            	    id="email"
-            	    type="text"
-            	    v-model.trim="email"
-            	    :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
-            	>
-            	<label for="email">Email</label>
-            	<small class="helper-text invalid"
-            	v-if="$v.email.$dirty && !$v.email.required"
-            	>Email не должен быть пустым</small>
-            	<small class="helper-text invalid"
-            	v-else-if="$v.email.$dirty && !$v.email.email"
-            	>Email невалиден</small>
+                    id="email"
+                    type="text"
+                    v-model.trim="email"
+                   :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
+            />
+              <label for="email">Email</label>
+              <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required"
+              >{{ 'EmailEmpty' | localize }}</small>
+              <small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email"
+              >{{ 'EmailInvalid' | localize }}</small>
           </div>
           <div class="input-field">
-            <input
-           		    id="password"
-           		    type="password"
-           		    v-model.trim="password"
-           		    :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
-           		>
-           		<label for="password">Пароль</label>
-           		<small 
-           		class="helper-text invalid"
-           		v-if="$v.password.$dirty && !$v.password.required"
-           		>Введите пароль</small>
-           		<small 
-           		class="helper-text invalid"
-           		v-if="$v.password.$dirty && !$v.password.minLength"
-           		>Пароль должен быть {{$v.password.$params.minLength.min}} символов. Сейчас он {{password.length}}</small>
+            <input id="password"
+                    type="password"
+                    v-model.trim="password"
+                    :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
+            >
+              <label for="password">{{ 'Password' | localize}}</label>
+              <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.required"
+              >Введите пароль</small>
+              <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.minLength"
+              >{{ 'PasswordLength' | localize }}{{$v.password.$params.minLength.min}} {{ 'Symbols' | localize }}. {{ 'CurrentPasswordLength' | localize }} {{password.length}}</small>
           </div>
           <div class="input-field">
             <input
@@ -43,12 +36,12 @@
             >
             <label for="name">Имя</label>
             <small class="helper-text invalid" 
-            v-if="$v.name.$dirty && !$v.name.required">Имя обязательно</small>
+            v-if="$v.name.$dirty && !$v.name.required">{{ 'NameRequired' | localize }}</small>
           </div>
           <p>
             <label>
               <input type="checkbox" v-model="agree"/>
-              <span>С правилами согласен</span>
+              <span>{{ 'RulesAgree' | localize }}</span>
             </label>
           </p>
         </div>
@@ -58,14 +51,14 @@
                 class="btn waves-effect waves-light auth-submit"
                 type="submit"
             >
-              Зарегистрироваться
+              {{ 'SignUp' | localize }}
               <i class="material-icons right">send</i>
             </button>
           </div>
         
           <p class="center">
-            Уже есть аккаунт?
-            <router-link to="/login">Войти!</router-link>
+            {{ 'AccountAlready' | localize }}
+            <router-link to="/login">{{ 'SignIn' | localize }}</router-link>
           </p>
         </div>
     </form>
@@ -94,22 +87,17 @@ export default {
         this.$v.$touch()
         return
       }
-
       const formData = {
-				email: this.email,
+        email: this.email,
         password: this.password,
         name: this.name
       }
-      
-      console.log(formData)
-
       try {
         await this.$store.dispatch('register', formData)
         this.$router.push('/')
       } catch(e) {
         console.log(e);
       }
-
       this.$router.push('/')
     }
   }

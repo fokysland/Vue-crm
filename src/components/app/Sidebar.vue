@@ -1,13 +1,12 @@
 <template>
     <ul class="sidenav app-sidenav" :class="{open: value}">
-
       <router-link
-				v-for="link in links"
-				:key="link.url"
+        v-for="link in links"
+        :key="link.url"
         tag="li"
         active-class="active"
         :to="link.url"
-				:exact="link.exact"
+		:exact="link.exact"
       >
         <a href="#" class="waves-effect waves-orange pointer">{{link.title}}</a>
       </router-link>
@@ -15,15 +14,16 @@
 </template>
 
 <script>
+import localize from '@/filters/localize.filter'
 export default {
     props: ['value'],
     data: () => ({
         links: [
-					{title: 'Счет', url: '/', exact: true},
-					{title: 'История', url: '/history'},
-					{title: 'Планирование', url: '/planning'},
-					{title: 'Новая запись', url: '/record'},
-					{title: 'Категории', url: '/categories'}
+          {title: localize('Bill'), url: '/', exact: true},
+          {title: localize('History'), url: '/history'},
+          {title: localize('Planning'), url: '/planning'},
+          {title: localize('NewRecord'), url: '/record'},
+          {title: localize('Categories'), url: '/categories'}
         ]
     })
 }

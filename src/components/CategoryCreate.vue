@@ -2,7 +2,7 @@
     <div class="col s12 m6">
         <div>
             <div class="page-subtitle">
-                <h4>Создать</h4>
+                <h4>{{ 'Create' | localize }}</h4>
             </div>
         <form @submit.prevent="submitHandler()">
             <div class="input-field">
@@ -12,11 +12,11 @@
 					v-model="title"
 					:class="{ invalid: ($v.title.$dirty && !$v.title.required) }"
                 >
-                <label for="name">Название</label>
+                <label for="name">{{ 'Title' | localize }}</label>
                 <span 
 					v-if="$v.title.$dirty && !$v.title.required"
 					class="helper-text invalid"
-				>Введите название категории</span>
+				>{{ 'EnterCategoryName' | localize }}</span>
             </div>
             <div class="input-field">
                 <input
@@ -25,11 +25,11 @@
 					v-model.number="limit"
 					:class="{ invalid: ($v.limit.$dirty && !$v.limit.minValue) }"
                 >
-                <label for="limit">Лимит</label>
+                <label for="limit">{{ 'Limit' | localize }}</label>
                 <span 
 					class="helper-text invalid"
 					v-if="$v.title.$dirty && !$v.title.minValue"
-				>Минимальное значение {{ $v.limit.$params.minValue.min }}
+				>{{ 'MinValue' | localize }} {{ $v.limit.$params.minValue.min }}
 				</span>
             </div>
             <button class="btn waves-effect waves-light" type="submit">
@@ -42,6 +42,7 @@
 </template>
 <script>
 import { required, minValue } from 'vuelidate/lib/validators/'
+import localize from '@/filters/localize.filter'
 
 export default {
     data: () => ({
@@ -69,7 +70,7 @@ export default {
 				this.title = ''
 				this.limit = 100
 				this.$v.$reset()
-				this.$message('Категория была создана')
+				this.$message(localize('CategoryCreated'))
 				this.$emit('created', category)
 			} catch(e) {}
 		}

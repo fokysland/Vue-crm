@@ -2,7 +2,7 @@
     <div class="col s12 m6">
         <div>
             <div class="page-subtitle">
-                <h4>Изменить</h4>
+                <h4>{{ 'Edit' | localize }}</h4>
             </div>
             <form>
 				<div class="input-field">
@@ -16,40 +16,40 @@
 					</select>
                 </div>
                 <div class="input-field">
-                	<input
-                	    id="name"
-                	    type="text"
+					<input
+						id="name"
+						type="text"
 						v-model="title"
 						:class="{ invalid: ($v.title.$dirty && !$v.title.required) }"
-                	>
-                	<label for="name">Название</label>
-                	<span 
+					>
+					<label for="name">{{ 'Title' | localize }}</label>
+					<span
 						v-if="$v.title.$dirty && !$v.title.required"
 						class="helper-text invalid"
-					>Введите название категории</span>
-            	</div>
+					>{{ 'EnterCategoryName' | localize }}</span>
+				</div>
 
-              	<div class="input-field">
-                	<input
-                	    id="limit"
-                	    type="number"
+				<div class="input-field">
+					<input
+						id="limit"
+						type="number"
 						v-model.number="limit"
 						:class="{ invalid: ($v.limit.$dirty && !$v.limit.minValue) }"
-                	>
-                	<label for="limit">Лимит</label>
-                	<span 
+					>
+					<label for="limit">{{ 'Limit' | localize }}</label>
+					<span
 						class="helper-text invalid"
 						v-if="$v.title.$dirty && !$v.title.minValue"
-					>Минимальное значение {{ $v.limit.$params.minValue.min }}
+					>{{ 'MinValue' | localize }} {{ $v.limit.$params.minValue.min }}
 					</span>
-            	</div>
+				</div>
                 <button class="btn waves-effect waves-light" @click="change" type="button">
-                    Изменить
+                    {{ 'Edit' | localize }}
                     <i class="material-icons right">send</i>
                 </button>
 				<button class="btn waves-effect waves-light" @click="remove" style="margin-left: 1vw" type="button">
-                    Удалить
-                	<i class="material-icons right">delete</i>
+                    {{ 'Delete' | localize }}
+					<i class="material-icons right">delete</i>
                 </button>
             </form>
         </div>
@@ -57,6 +57,7 @@
 </template>
 <script>
 import { required, minValue } from 'vuelidate/lib/validators/'
+import localize from '@/filters/localize.filter'
 
 export default {
 	props: {
@@ -79,7 +80,7 @@ export default {
 					limit: this.limit
 				}
 				await this.$store.dispatch('updateCategory', categoryData)
-				this.$message('Категория обновлена')
+				this.$message(localize('CategoryUpdate'))
 				this.$emit('updated', categoryData)
 			} catch(e) {}
 		},
@@ -91,7 +92,7 @@ export default {
 					limit: this.limit
 				}
 				await this.$store.dispatch('removeCategory', categoryData)
-				this.$message('Категория удалена')
+				this.$message(localize('CategoryRemove'))
 				this.$emit('removed', categoryData)
 			} catch(e) {}
 		},
