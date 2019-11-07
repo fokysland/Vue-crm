@@ -35,7 +35,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import localize from '@/filters/localize.filter'
 export default {
+  metaInfo: () => ({
+    title: localize('Profile')
+  }),
   data: () => ({
     name: '',
     isRuLocale: true

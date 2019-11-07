@@ -26,25 +26,27 @@
     </div>
 </template>
 <script>
+import localize from '@/filters/localize.filter'
 export default {
-  name: 'detail-record',
-  data: () => ({
-      record: null,
-      loading: true
-  }),
-  async mounted() {
+	name: 'detail-record',
+	metaInfo: () => ({
+		title: localize('Record')
+	}),
+	data: () => ({
+		record: null,
+		loading: true
+	}),
+	async mounted() {
 		const id = this.$route.params.id
 		const record = await this.$store.dispatch('fetchRecordById', id)
 		const category = await this.$store.dispatch('fetchCategoryById', record.categoryId)
-
 		this.record = {
 			...record,
 			typeColor: record.type === 'income' ? 'green' : 'red',
 			typeText: record.type === 'income' ? 'Доход' : 'Расход',
 			categoryName: category.title
 		}
-
 		this.loading = false
-  }
+	}
 }
 </script>

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
+import VueMeta from 'vue-meta'
 import Paginate from 'vuejs-paginate'
 import App from './App.vue'
 import router from './router'
@@ -27,12 +28,13 @@ Vue.component('Loader', Loader)
 Vue.component('Paginate', Paginate)
 Vue.use(Vuelidate)
 Vue.use(messagePlugin)
+Vue.use(VueMeta)
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3wefdtDaqLQIdwJJlgIYrdmxWEknPKwQ",
-  authDomain: "vue-crm-439ee.firebaseapp.com",
-  databaseURL: "https://vue-crm-439ee.firebaseio.com",
-  projectId: "vue-crm-439ee",
+  apiKey: process.env.VUE_APP_apiKey,
+  authDomain: process.env.VUE_APP_authDomain,
+  databaseURL: process.env.VUE_APP_databaseURL,
+  projectId: process.env.VUE_APP_projectId,
   storageBucket: "",
   messagingSenderId: "629081783193",
   appId: "1:629081783193:web:03912f252e04c919"

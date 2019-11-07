@@ -53,7 +53,13 @@ const locales = {
 		Open: 'Открыть',
 		ExchangeRates: 'Курс валют',
 		Currency: 'Валюта',
-		ExchangeRate: 'Курс валюты'
+		ExchangeRate: 'Курс валюты',
+		Record: 'Запись',
+		EmailEmpty: 'Email не должен быть пустым',
+		EmailInvalid: 'Email должен быть валидным',
+		EnterPassword: 'Введите свой пароль',
+		NoAccount: 'Нет аккаунта?',
+		Login: 'Войти'
 	},
 	'en-US': {
 		ProfileTitle: 'Profile',
@@ -107,7 +113,13 @@ const locales = {
 		Open: 'Open',
 		ExchangeRates: 'ExchangeRates',
 		Currency: 'Currency',
-		ExchangeRate: 'Exchange rate'
+		ExchangeRate: 'Exchange rate',
+		Record: 'Record',
+		EmailEmpty: 'Email must not be empty',
+		EmailInvalid: 'Email must be valid',
+		EnterPassword: 'Enter your password',
+		NoAccount: 'No account?',
+		Login: 'Login'
 	},
 };
 

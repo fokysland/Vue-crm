@@ -23,7 +23,7 @@
             >
               <label for="password">{{ 'Password' | localize}}</label>
               <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.required"
-              >Введите пароль</small>
+              >{{ 'EnterPassword' | localize }}</small>
               <small class="helper-text invalid" v-if="$v.password.$dirty && !$v.password.minLength"
               >{{ 'PasswordLength' | localize }}{{$v.password.$params.minLength.min}} {{ 'Symbols' | localize }}. {{ 'CurrentPasswordLength' | localize }} {{password.length}}</small>
           </div>
@@ -66,9 +66,13 @@
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators'
+import localize from '@/filters/localize.filter'
 
 export default {
   name: 'register',
+  metaInfo: () => ({
+    title: localize('Sign up')
+  }),
   data: () => ({
     email: '',
     password: '',

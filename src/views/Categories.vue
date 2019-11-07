@@ -22,8 +22,12 @@
 <script>
 import CategoryCreate from '@/components/CategoryCreate'
 import CategoryEdit from '@/components/CategoryEdit'
+import localize from '@/filters/localize.filter'
 export default {
     name: 'categories',
+    metaInfo: () => ({
+        title: localize('Categories')
+    }),
     data: () => ({
         categories: [],
         loading: true,

@@ -27,6 +27,9 @@ import HomeCurrency from '@/components/HomeCurrency'
 
 export default {
   name: 'home',
+  metaInfo: () => ({
+    title: 'CRM'
+  }),
   data: () => ({
     loading: true,
     currency: null
