@@ -4,18 +4,18 @@
   </div>
 </template>
 <script>
-import messages from '@/utils/messages'
+import messages from "@/utils/messages";
 
 export default {
   computed: {
     error() {
-      return this.$store.getters.error
+      return this.$store.getters.error;
     }
   },
   watch: {
     error(fbErr) {
-      this.$error(messages[fbErr.code] || 'Что-то пошло не так')
+      this.$error(messages[fbErr.code] || "Что-то пошло не так");
     }
   }
-}
+};
 </script>
